@@ -2,7 +2,7 @@
 Download manga/comic from [Manganelo](https://manganelo.com/) and view it in a simple website that runs on your machine.
 
 ## Introduction
-Rawdevart Downloader allows you to download manga/comic from [Manganelo](https://manganelo.com/). The program is written in Python 3.0. A simple UI for viewing the manga/comic downloaded is available as an HTML page which can be run on the local machine.\
+Manganelo Downloader allows you to download manga/comic from [Manganelo](https://manganelo.com/). The program is written in Python 3.0. A simple UI for viewing the manga/comic downloaded is available as an HTML page which can be run on the local machine.\
 ![image001.jpg](/images/image001.jpg)
 
 ## Setting Up
