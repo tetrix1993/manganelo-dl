@@ -1,0 +1,34 @@
+body {
+  background: #000000;
+  color: #FFFFFF;
+}
+
+.waiting {
+    cursor: progress;
+}
+
+#div-image {
+    margin-top: 5px;
+    text-align: center;
+    line-height: 0;
+}
+
+.image img {
+    padding: 0;
+    margin: 0;
+    display: block;
+}
+
+/*
+#image {
+    max-height: 800px;
+}
+*/
+
+#input-slideshow-speed, #input-max-height {
+    width: 50px;
+}
+
+.hidden-image {
+    max-height: 1000px;
+}

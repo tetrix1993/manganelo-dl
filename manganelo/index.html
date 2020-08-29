@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="static/main.css" />
+    <script src="static/jquery-3.4.1.min.js"></script>
+</head>
+<body>
+    <div id="div-top">
+        <select id="select-series" onchange="selectSeries(this)">
+            <option value="-1">Select series...</option>
+        </select>&nbsp;
+        <select id="select-chapter" onchange="selectChapter(this)">
+        </select>
+    </div>
+    <div id="div-images"></div>
+    <br/>
+    <button onclick="scrollToTop()" id="btn-top" hidden>Go to Top</button>
+    <script src="static/script.js"></script>
+</body>
+</html>
