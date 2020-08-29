@@ -32,3 +32,8 @@ body {
 .hidden-image {
     max-height: 1000px;
 }
+
+table, th, td {
+    border: 1px solid white;
+    text-align: left;
+}
