@@ -20,6 +20,7 @@ pip install bs4
 ### Download New Manga/Comic
 This section explains how to download a new manga/comic series for the first time.
 1. Using the Command Prompt (Terminal for MacOS), change to the directory to where the file `manganelo_download.py` is located.
+    1. For example, if the file is located at `D:/manganelo-dl` on your machine, enter `cd "D:/manganelo-dl"` to change to that directory.
 2. Run the following command: `python manganelo_download.py <URL>`
     1. Where `<URL>` is the URL of the very first chapter that manga you want to download.
     2. Example: `python manganelo_download.py https://manganelo.com/chapter/cn919171/chapter_1`
