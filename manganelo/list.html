@@ -17,6 +17,7 @@
         <tr>
             <th>Series</th>
             <th>Last Uploaded</th>
+            <th>Chapter</th>
         </tr>
     </table>
     <script>
@@ -26,8 +27,14 @@
             $.ajax('/download/' + id + '/data.json', {
                 success: function(data) {
                     chapterList = data;
-                    //console.log(chapterList[0].datePublished);
-                    $('#s-' + id).html(chapterList[0].datePublished);
+                    datePublished = chapterList[0].datePublished;
+                    formatted_dt = datePublished.substring(0, 4) + '-'
+                        + datePublished.substring(4, 6) + '-'
+                        + datePublished.substring(6, 8) + ' '
+                        + datePublished.substring(8, 10) + ':'
+                        + datePublished.substring(10, 12)
+                    $('#s-' + id).html(formatted_dt);
+                    $('#c-' + id).html(chapterList[0].url);
                 },
                 error: function(data, textStatus, xhr) {
                     alert(data.status + ' ' + xhr);
@@ -41,7 +48,7 @@
                     seriesList = data;
                     for (i = 0; i < seriesList.length; i++) {
                         series = seriesList[i]
-                        $table.html($table.html() + '<td>' + series.name + '</td><td id="s-' + series.id + '"></td>');
+                        $table.html($table.html() + '<td>' + series.name + '</td><td id="s-' + series.id + '"></td><td id="c-' + series.id + '"></td>');
                         loadChapter(series.id);
                     }
                 },
