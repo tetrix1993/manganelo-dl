@@ -4,7 +4,7 @@ import os
 import math
 from multiprocessing import Process
 from manganelo_download import process_chapter_page
-from manganelo_download import get_chapter_url_name
+from manganelo_download import get_chapter_url_name, create_web_listing
 #from manganelo_download import get_published_date
 
 from manganelo_download import MANGA_LIST_JSON_FILEPATH
@@ -53,6 +53,8 @@ def run():
 
         for process in processes:
             process.join()
+
+    create_web_listing()
 
 
 def run_process(manga):

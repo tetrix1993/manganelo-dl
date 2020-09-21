@@ -13,6 +13,7 @@ CHAPTER_CACHE_FILE_NAME = 'cache'
 CHAPTER_LIST_JSON_NAME = 'data.json'
 IMAGE_LIST_JSON_NAME = 'data.json'
 DOWNLOAD_HISTORY_FILE = STATIC_DIR + '/history.log'
+WEB_LISTING_OUTPUT = STATIC_DIR + '/web_listing.json'
 
 MANGANELO_MANGA_TEMPLATE = 'https://manganelo.com/manga/%s'
 
@@ -210,6 +211,25 @@ def process_chapter_page(index, manga_url_name, chapter_url_name, soup, url):
         generate_download_history(manga_url_name, chapter_url_name)
 
 
+def create_web_listing():
+    with open(MANGA_LIST_JSON_FILEPATH, 'r', encoding='utf-8') as f:
+        manga_list_json = json.loads(f.read())
+
+    manga_listing = []
+    for manga in manga_list_json:
+        data_json = DOWNLOAD_DIR + '/' + str(manga['id']) + '/data.json'
+        if os.path.exists(data_json):
+            with open(data_json, 'r', encoding='utf-8') as f:
+                item = json.loads(f.read())[0]
+                manga_listing.append({'id': manga['id'], 'name': manga['name'],
+                             'dt_published': item['datePublished'], 'chapter_url': item['url']})
+
+    sorted_manga_listing = sorted(manga_listing, key=lambda i: i['dt_published'], reverse=True)
+    with open(WEB_LISTING_OUTPUT, 'w+', encoding='utf-8') as f:
+        json.dump(sorted_manga_listing, f)
+    print('Updated Web Listing')
+
+
 def run(url):
     create_directories()
     manga_list = read_manga_list_file()
@@ -237,6 +257,8 @@ def run(url):
 
     if result == -1 or not os.path.exists(MANGA_LIST_JSON_FILEPATH):
         generate_manga_list_json()
+
+    create_web_listing()
 
 
 if __name__ == '__main__':
