@@ -8,13 +8,15 @@
     <script src="static/jquery-3.4.1.min.js"></script>
 </head>
 <body>
-    <button onclick="sortTableBySeries()">Sort By Series</button>
-    <button onclick="sortTableByDate()">Sort By Latest Date</button>
+    <button onclick="sortTable(0, false, true)">Sort By ID</button>
+    <button onclick="sortTable(1, false, false)">Sort By Series</button>
+    <button onclick="sortTable(2, true, false)">Sort By Latest Date</button>
     <button onclick="window.location.href='/'">Go Back</button>
     <br/>
     <br/>
     <table id="updated-table">
         <tr>
+            <th>ID</th>
             <th>Series</th>
             <th>Last Uploaded</th>
             <th>Chapter</th>
@@ -22,26 +24,7 @@
     </table>
     <script>
         let $table = $('#updated-table');
-        
-        /*let loadChapter = function(id) {
-            $.ajax('/download/' + id + '/data.json', {
-                success: function(data) {
-                    chapterList = data;
-                    datePublished = chapterList[0].datePublished;
-                    formatted_dt = datePublished.substring(0, 4) + '-'
-                        + datePublished.substring(4, 6) + '-'
-                        + datePublished.substring(6, 8) + ' '
-                        + datePublished.substring(8, 10) + ':'
-                        + datePublished.substring(10, 12)
-                    $('#s-' + id).html(formatted_dt);
-                    $('#c-' + id).html(chapterList[0].url);
-                },
-                error: function(data, textStatus, xhr) {
-                    alert(data.status + ' ' + xhr);
-                }
-            });
-        }*/
-        
+
         let loadSeries = function() {
             $.ajax('/static/web_listing.json', {
                 success: function(data) {
@@ -54,8 +37,7 @@
                             + datePublished.substring(6, 8) + ' '
                             + datePublished.substring(8, 10) + ':'
                             + datePublished.substring(10, 12);
-                        $table.html($table.html() + '<td>' + series.name + '</td><td>' + formatted_dt + '</td><td>' + series.chapter_url + '</td>');
-                        //loadChapter(series.id);
+                        $table.html($table.html() + '<td style="text-align: right">' + series.id + '</td><td>' + series.name + '</td><td>' + formatted_dt + '</td><td>' + series.chapter_url + '</td>');
                     }
                 },
                 error: function(data, textStatus, xhr) {
@@ -63,44 +45,9 @@
                 }
             });
         }
-        
-        // https://www.w3schools.com/howto/howto_js_sort_table.asp
-        let sortTableByDate = function() {
-          var table, rows, switching, i, x, y, shouldSwitch;
-          table = document.getElementById("updated-table");
-          switching = true;
-          /* Make a loop that will continue until
-          no switching has been done: */
-          while (switching) {
-            // Start by saying: no switching is done:
-            switching = false;
-            rows = table.rows;
-            /* Loop through all table rows (except the
-            first, which contains table headers): */
-            for (i = 1; i < (rows.length - 1); i++) {
-              // Start by saying there should be no switching:
-              shouldSwitch = false;
-              /* Get the two elements you want to compare,
-              one from current row and one from the next: */
-              x = rows[i].getElementsByTagName("TD")[1];
-              y = rows[i + 1].getElementsByTagName("TD")[1];
-              // Check if the two rows should switch place:
-              if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-                // If so, mark as a switch and break the loop:
-                shouldSwitch = true;
-                break;
-              }
-            }
-            if (shouldSwitch) {
-              /* If a switch has been marked, make the switch
-              and mark that a switch has been done: */
-              rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-              switching = true;
-            }
-          }
-        }
 
-        let sortTableBySeries = function() {
+        // https://www.w3schools.com/howto/howto_js_sort_table.asp
+        let sortTable = function(colNum, isDescending, isNumber) {
           var table, rows, switching, i, x, y, shouldSwitch;
           table = document.getElementById("updated-table");
           switching = true;
@@ -117,10 +64,12 @@
               shouldSwitch = false;
               /* Get the two elements you want to compare,
               one from current row and one from the next: */
-              x = rows[i].getElementsByTagName("TD")[0];
-              y = rows[i + 1].getElementsByTagName("TD")[0];
+              x = rows[i].getElementsByTagName("TD")[colNum];
+              y = rows[i + 1].getElementsByTagName("TD")[colNum];
               // Check if the two rows should switch place:
-              if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+              if ((isDescending && ((!isNumber && x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) || (isNumber && parseInt(x.innerHTML) < parseInt(y.innerHTML))))
+                || (!isDescending && ((!isNumber && x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) || (isNumber && parseInt(x.innerHTML) > parseInt(y.innerHTML)))))
+              {
                 // If so, mark as a switch and break the loop:
                 shouldSwitch = true;
                 break;
