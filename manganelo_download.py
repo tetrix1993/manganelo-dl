@@ -212,6 +212,10 @@ def process_chapter_page(index, manga_url_name, chapter_url_name, soup, url):
 
 
 def create_web_listing():
+    if not os.path.exists(MANGA_LIST_JSON_FILEPATH):
+        print('Manga list not found. Please use manganelo_download.py to download at least one manga first.')
+        return
+
     with open(MANGA_LIST_JSON_FILEPATH, 'r', encoding='utf-8') as f:
         manga_list_json = json.loads(f.read())
 

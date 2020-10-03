@@ -1,11 +1,9 @@
 from myutil.util import *
 import json
 import os
-import math
-from multiprocessing import Process
+from multiprocessing import Pool
 from manganelo_download import process_chapter_page
 from manganelo_download import get_chapter_url_name, create_web_listing
-#from manganelo_download import get_published_date
 
 from manganelo_download import MANGA_LIST_JSON_FILEPATH
 from manganelo_download import DOWNLOAD_DIR
@@ -26,7 +24,6 @@ def get_manga_list_data_json():
 
 
 def get_last_downloaded_chapter(manga_dir):
-    chapter_list = []
     with open(manga_dir + '/' + CHAPTER_LIST_JSON_NAME, 'r', encoding='utf-8') as f:
         chapter_list = json.loads(f.read())
     if len(chapter_list) > 0:
@@ -37,22 +34,16 @@ def get_last_downloaded_chapter(manga_dir):
 
 def run():
     manga_list = get_manga_list_data_json()
-    
-    processes = []
-    num_of_manga = len(manga_list)
     if MAX_PROCESSES == 0:
         return
-    num_of_iterations = math.floor(num_of_manga / MAX_PROCESSES) + 1
-    for i in range(num_of_iterations):
-        start_index = i * MAX_PROCESSES
-        end_index = min((i + 1) * MAX_PROCESSES, num_of_manga)
-        for j in range(start_index, end_index):
-            process = Process(target=run_process, args=(manga_list[j], ))
-            processes.append(process)
-            process.start()
 
-        for process in processes:
-            process.join()
+    with Pool(MAX_PROCESSES) as p:
+        results = []
+        for manga in manga_list:
+            result = p.apply_async(run_process, args=(manga,))
+            results.append(result)
+        for result in results:
+            result.wait()
 
     create_web_listing()
 
