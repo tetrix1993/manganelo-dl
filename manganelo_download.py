@@ -186,8 +186,8 @@ def generate_image_json(chapter_dir, image_filenames):
 def process_chapter_page(index, manga_url_name, chapter_url_name, soup, url):
     manga_dir = DOWNLOAD_DIR + '/' + str(index)
     chapter_dir = manga_dir + '/' + chapter_url_name
-    if os.path.exists(chapter_dir + '/001.jpg'):
-        return
+    # if os.path.exists(chapter_dir + '/001.jpg'):
+    #     return
     chapter_name = get_chapter_name(soup)
     if chapter_name is None:
         chapter_name = chapter_url_name
